@@ -5,7 +5,7 @@ import Error from "./layout/Error";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
-import Login from "./pages/Login";
+import Login from "./layout/Login";
 
 const router = createBrowserRouter([
   {

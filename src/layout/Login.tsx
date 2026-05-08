@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
-import { useNvigation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
-    const navigation = useNvigation();
+    const navigation = useNavigate();
 
 const handleLogin = (e: React.FormEvent) => { 
   e.preventDefault();
