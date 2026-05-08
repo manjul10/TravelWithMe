@@ -5,6 +5,7 @@ import Error from "./layout/Error";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/product", element: <Product /> },
       { path: "/pricing", element: <Pricing /> },
+      { path: "/login", element: <Login /> },
     ],
   },
 ]);

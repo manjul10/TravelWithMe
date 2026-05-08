@@ -16,7 +16,7 @@ const Pricing = () => {
 
       <div>
         <img
-        src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d"
+        src="https://images.unsplash.com/photo-1504384308090-c894fdcc538"
         alt="pricing"
         className="w-full h-[450px] object-cover rounded-2xl shadow-lg"
         />
