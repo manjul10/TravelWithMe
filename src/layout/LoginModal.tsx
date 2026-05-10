@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice";
+import { login, logout } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 interface LoginModalProps {
@@ -11,7 +11,7 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,9 +19,13 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
     if (email === "user@example.com" && password === "password") {
       dispatch(login(email));
       onClose();
-      navigation("/");
+      navigate("/app/city");
+    }else{
+      alert("Invalid Credentials!")
     }
   };
+
+  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
