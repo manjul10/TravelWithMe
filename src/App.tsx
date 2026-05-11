@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
 import Login from "./layout/Login";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,8 @@ const router = createBrowserRouter([
       { path: "/product", element: <Product /> },
       { path: "/pricing", element: <Pricing /> },
       { path: "/login", element: <Login /> },
+      { path: "/app", element: <ProtectedRoute><AppLayout /></ProtectedRoute> }
+
     ],
   },
 ]);

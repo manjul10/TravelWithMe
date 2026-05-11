@@ -48,7 +48,7 @@ const Navbar = () => {
             <div className="flex items-center gap-4">
               <span className="text-sm font-medium">{email}</span>
               <button
-                onClick={() => dispatch(logout())}
+                onClick={handleLogout}
                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
                 Logout
