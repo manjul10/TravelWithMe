@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import "./App.css";
 import AppLayout from "./layout/AppLayout";
 import Error from "./layout/Error";
@@ -7,6 +11,10 @@ import Product from "./pages/Product";
 import Pricing from "./pages/Pricing";
 import Login from "./layout/Login";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import MainContainer from "./layout/MainContainer";
+import CitiesList from "./pages/CitiesList";
+import CountriesList from "./pages/CountriesList";
+import Form from "./pages/Form";
 
 const router = createBrowserRouter([
   {
@@ -17,8 +25,20 @@ const router = createBrowserRouter([
       { path: "/product", element: <Product /> },
       { path: "/pricing", element: <Pricing /> },
       { path: "/login", element: <Login /> },
-      { path: "/app", element: <ProtectedRoute><AppLayout /></ProtectedRoute> }
-
+      {
+        path: "/app",
+        element: (
+          <ProtectedRoute>
+            <MainContainer />
+          </ProtectedRoute>
+        ),
+        children: [
+          { index: true, element: <Navigate replace to="cities" /> },
+          { path: "cities", element: <CitiesList /> },
+          { path: "countries", element: <CountriesList /> },
+          { path: "form", element: <Form /> },
+        ],
+      },
     ],
   },
 ]);

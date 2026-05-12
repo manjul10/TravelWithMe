@@ -11,9 +11,7 @@ const Navbar = () => {
   const { isLoggedIn, email } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const handleLoginClick = () => {
-  //   setShowLoginModal(true);
-  // };
+  
 
   const handleLogout = () =>{
     dispatch(logout());
