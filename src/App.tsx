@@ -15,6 +15,7 @@ import MainContainer from "./layout/MainContainer";
 import CitiesList from "./pages/CitiesList";
 import CountriesList from "./pages/CountriesList";
 import Form from "./pages/Form";
+import City from "./pages/City";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate replace to="cities" /> },
           { path: "cities", element: <CitiesList /> },
+          {path: "city/:id", element: <City /> },
           { path: "countries", element: <CountriesList /> },
           { path: "form", element: <Form /> },
         ],

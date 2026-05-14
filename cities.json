@@ -1,0 +1,29 @@
+{
+  "cities": [
+    {
+      "cityName": "Bhatpar",
+      "country": "India",
+      "dateVisited": "2026-05-14T05:13:00.920Z",
+      "notes": "cw",
+      "emoji": "🇮🇳",
+      "position": {
+        "lat": 26.352615136752373,
+        "lng": 84.12002943309578
+      },
+      "id": "oFtrE3Lli2Q"
+    },
+    {
+      "cityName": "Kathmandu",
+      "country": "Nepal",
+      "dateVisited": "2026-05-14T05:14:10.215Z",
+      "notes": "iugeiwg",
+      "emoji": "🇳🇵",
+      "position": {
+        "lat": 27.6912865,
+        "lng": 85.338163
+      },
+      "id": "UCnEWx9KMME"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

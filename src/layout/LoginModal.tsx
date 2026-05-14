@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login, logout } from "../redux/authSlice";
+import { login } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 interface LoginModalProps {
@@ -16,10 +16,10 @@ const LoginModal = ({ onClose }: LoginModalProps) => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === "user@example.com" && password === "password") {
+    if (email === "traveller@example.com" && password === "password") {
       dispatch(login(email));
       onClose();
-      navigate("/app/city");
+      navigate("/app/cities");
     }else{
       alert("Invalid Credentials!")
     }

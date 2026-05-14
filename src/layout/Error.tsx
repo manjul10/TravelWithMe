@@ -7,8 +7,8 @@ function Error() {
   let errorMessage = "An unexpected error occurred.";
   if (isRouteErrorResponse(error)) {
     errorMessage = error.statusText || error.data;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
+  } else if (error && typeof error === 'object' && 'message' in error) {
+    errorMessage = (error as { message: string }).message;
   }
 
   return (
