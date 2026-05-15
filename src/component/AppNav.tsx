@@ -34,6 +34,21 @@ const AppNav = () => {
             Countries
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to="insight"
+            className={({ isActive }) =>
+              `px-6 py-2 rounded-md uppercase text-sm font-semibold tracking-wider
+      transition-colors ${
+        isActive
+          ? "bg-[#242a2e] text-white"
+          : "text-gray-900 hover:bg-[#3a4045]"
+      }`
+            }
+          >
+           Insight
+          </NavLink>
+        </li>
       </ul>
     </div>
   );

@@ -16,6 +16,7 @@ import CitiesList from "./pages/CitiesList";
 import CountriesList from "./pages/CountriesList";
 import Form from "./pages/Form";
 import City from "./pages/City";
+import Insight from "./pages/Insight";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
           {path: "city/:id", element: <City /> },
           { path: "countries", element: <CountriesList /> },
           { path: "form", element: <Form /> },
+          { path: "insight", element: <Insight /> },
         ],
       },
     ],

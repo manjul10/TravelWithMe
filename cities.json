@@ -23,6 +23,30 @@
         "lng": 85.338163
       },
       "id": "UCnEWx9KMME"
+    },
+    {
+      "cityName": "Sidhauli",
+      "country": "India",
+      "dateVisited": "2026-05-15T05:27:18.604Z",
+      "notes": "Dont know about the context",
+      "emoji": "🇮🇳",
+      "position": {
+        "lat": 27.196174567202387,
+        "lng": 80.91430664062501
+      },
+      "id": "4tCGTE9gLak"
+    },
+    {
+      "cityName": "Guthichaur",
+      "country": "Nepal",
+      "dateVisited": "2026-05-15T05:30:09.676Z",
+      "notes": "I love karnali",
+      "emoji": "🇳🇵",
+      "position": {
+        "lat": 29.257802464736336,
+        "lng": 82.27661132812501
+      },
+      "id": "5ZsI-PoWiEo"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
