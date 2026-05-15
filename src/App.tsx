@@ -17,6 +17,7 @@ import CountriesList from "./pages/CountriesList";
 import Form from "./pages/Form";
 import City from "./pages/City";
 import Insight from "./pages/Insight";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate replace to="cities" /> },
           { path: "cities", element: <CitiesList /> },
-          {path: "city/:id", element: <City /> },
+          { path: "city/:id", element: <City /> },
           { path: "countries", element: <CountriesList /> },
           { path: "form", element: <Form /> },
           { path: "insight", element: <Insight /> },

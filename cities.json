@@ -13,18 +13,6 @@
       "id": "oFtrE3Lli2Q"
     },
     {
-      "cityName": "Kathmandu",
-      "country": "Nepal",
-      "dateVisited": "2026-05-14T05:14:10.215Z",
-      "notes": "iugeiwg",
-      "emoji": "🇳🇵",
-      "position": {
-        "lat": 27.6912865,
-        "lng": 85.338163
-      },
-      "id": "UCnEWx9KMME"
-    },
-    {
       "cityName": "Sidhauli",
       "country": "India",
       "dateVisited": "2026-05-15T05:27:18.604Z",
@@ -37,16 +25,64 @@
       "id": "4tCGTE9gLak"
     },
     {
-      "cityName": "Guthichaur",
+      "cityName": "Dataganj",
+      "country": "India",
+      "dateVisited": "2026-05-15T09:25:35.374Z",
+      "notes": "special city\n",
+      "emoji": "🇮🇳",
+      "position": {
+        "lat": 28.04289477256162,
+        "lng": 79.398193359375
+      },
+      "id": "ZT56Sf5LXg8"
+    },
+    {
+      "cityName": "Kathmandu Metropolitan City",
       "country": "Nepal",
-      "dateVisited": "2026-05-15T05:30:09.676Z",
-      "notes": "I love karnali",
+      "dateVisited": "2026-05-15T09:29:58.162Z",
+      "notes": "it is special",
       "emoji": "🇳🇵",
       "position": {
-        "lat": 29.257802464736336,
-        "lng": 82.27661132812501
+        "lat": 27.6931784,
+        "lng": 85.328473
       },
-      "id": "5ZsI-PoWiEo"
+      "id": "JCjpT3OBR34"
+    },
+    {
+      "cityName": "Uchquduq District",
+      "country": "Uzbekistan",
+      "dateVisited": "2026-05-15T09:32:19.183Z",
+      "notes": "yoo",
+      "emoji": "🇺🇿",
+      "position": {
+        "lat": 42.293564192170095,
+        "lng": 62.05078125000001
+      },
+      "id": "23wgt542wxs"
+    },
+    {
+      "cityName": "Satyawati",
+      "country": "Nepal",
+      "dateVisited": "2026-05-15T09:41:04.918Z",
+      "notes": "kaha ho yo?\n",
+      "emoji": "🇳🇵",
+      "position": {
+        "lat": 28.081673729044283,
+        "lng": 83.41369628906251
+      },
+      "id": "IYisyxklYDk"
+    },
+    {
+      "cityName": "Sayal",
+      "country": "Nepal",
+      "dateVisited": "2026-05-15T09:41:26.613Z",
+      "notes": "khai",
+      "emoji": "🇳🇵",
+      "position": {
+        "lat": 29.372601506681402,
+        "lng": 81.01318359375001
+      },
+      "id": "f1grwJql9EY"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

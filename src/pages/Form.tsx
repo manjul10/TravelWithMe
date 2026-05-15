@@ -13,7 +13,7 @@ export function convertToEmoji(countryCode: string) {
   return String.fromCodePoint(...codePoints);
 }
 
-const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
+const BASE_URL = "https://nominatim.openstreetmap.org/reverse";
 const Form = () => {
   const dispatch = useAppDispatch();
   const [lat, lng] = useUrlPosition();
@@ -27,52 +27,84 @@ const Form = () => {
   const [isLoadingGeoCoding, setIsLoadingGeoCoding] = useState(false);
   const [geoCodingError, setGeoCodingError] = useState<string | null>(null);
 
-useEffect(() => {
-  if(!lat || !lng) return;
+  useEffect(() => {
+    if (!lat && !lng) return;
 
-  const fetchCityName = async () => {
-try{
-  setIsLoadingGeoCoding(true);
-  setGeoCodingError(null);
+    const fetchCityName = async () => {
+      try {
+        setIsLoadingGeoCoding(true);
+        setGeoCodingError(null);
 
-const res = await fetch(`${BASE_URL}?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
+        const res = await fetch(
+          `${BASE_URL}?format=json&lat=${lat}&lon=${lng}&accept-language=en`,
+        );
 
-const data = await res.json();
+        if (!res.ok) {
+          throw new Error(
+            "Could not reach the location service. Please try again later.",
+          );
+        }
 
+        const data = await res.json();
 
-console.log(data);
-if(!data.countryCode){
-  setGeoCodingError("That doesn't seem to be a city. Click somewhere else!😉");
-  return;
-}
-setCityName(data.city || data.locality || "");
-setCountry(data.countryName || "");
-setEmoji(convertToEmoji(data.countryCode));
-}catch(err){
-  setGeoCodingError("An error occurred while fetching city name");
-} finally {
-  setIsLoadingGeoCoding(false);
-}
+        // Broaden the check: Nominatim uses many keys for "locality"
+        const locationName = 
+          data.address.city || 
+          data.address.town || 
+          data.address.village || 
+          data.address.suburb || 
+          data.address.hamlet || 
+          data.address.municipality ||
+          "";
 
-}
-fetchCityName();
-},[lat,lng]);
+        if (!data.address || (!locationName && !data.address.country)) {
+          throw new Error("That doesn't seem to be a city. Click somewhere else! 😉");
+        }
 
+        const cityName = locationName || data.display_name.split(',')[0];
+        const countryName = data.address.country || "";
+        const countryCode = data.address.country_code || "";
+
+        setCityName(cityName);
+        setCountry(countryName);
+        setEmoji(convertToEmoji(countryCode));
+      } catch (err: any) {
+        setGeoCodingError(err.message);
+      } finally {
+        setIsLoadingGeoCoding(false);
+      }
+    };
+    fetchCityName();
+  }, [lat, lng]);
 
   if (isLoadingGeoCoding)
-    return <p className="text-white text-center">Loading city info...</p>;
+    return (
+      <div className="flex flex-col items-center py-10">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mb-4"></div>
+        <p className="text-gray-400 text-sm">Identifying location...</p>
+      </div>
+    );
+
   if (geoCodingError)
     return (
-      <p
-        className="text-red-400
-       text-center"
-      >
-        {geoCodingError}
-      </p>
+      <div className="bg-red-50 p-4 rounded-xl border border-red-100 text-center">
+        <p className="text-red-600 text-sm font-medium">{geoCodingError}</p>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-3 text-xs font-bold text-red-700 underline uppercase tracking-widest"
+        >
+          &larr; Go Back
+        </button>
+      </div>
     );
+
   if (!lat && !lng)
     return (
-      <p className="text-white text-center">Click on the map to get started!</p>
+      <div className="p-10 text-center bg-purple-50 rounded-2xl border border-purple-100">
+        <p className="text-purple-700 text-sm font-medium">
+          Click on the map to start your journey!
+        </p>
+      </div>
     );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -93,55 +125,65 @@ fetchCityName();
     await dispatch(createCity(newCity));
     navigate("/app/cities");
   };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-[#42484d] p-6 rounded-lg flex flex-col gap-4 text-white "
-    >
-      <div className="flex flex-col gap-1">
-        <label className="font-semibold">City Name</label>
-        <div className="relative">
+    <form onSubmit={handleSubmit} className="bg-white p-2 flex flex-col gap-5">
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+          City Name
+        </label>
+        <div className="relative group">
           <input
-            className="p-2 rounded bg-gray-700 border-none w-full"
+            className="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
             value={cityName}
             onChange={(e) => setCityName(e.target.value)}
           />
-          <span className="absolute right-3 top-2 text-xl">{emoji}</span>
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xl filter grayscale group-focus-within:grayscale-0 transition-all">
+            {emoji}
+          </span>
         </div>
       </div>
-      <div className="flex flex-col gap-1">
-        <label className="font-semibold">When did you go to {cityName}?</label>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+          When did you visit?
+        </label>
         <DatePicker
-          className="p-2 rounded bg-gray-700 border-none w-full"
+          className="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
           onChange={(date: Date | null) => setDateVisited(date || new Date())}
           selected={dateVisited}
           dateFormat="dd/MM/yyyy"
         />
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label className="font-semibold">Notes about {cityName}</label>
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+          Notes & Memories
+        </label>
         <textarea
-          className="p-2 rounded bg-gray-700 border-none"
+          rows={3}
+          className="w-full bg-gray-50 border border-gray-100 rounded-xl p-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all resize-none"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
+          placeholder="What made this place special?"
         />
       </div>
-      <div className="flex justify-between mt-4">
+
+      <div className="flex gap-3 mt-2">
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="px-4 py-2 border border-gray-500 rounded"
+          className="flex-1 px-4 py-3 border border-gray-100 rounded-xl text-sm font-bold text-gray-500 hover:bg-gray-50 transition-all"
         >
-          &larr; Back
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="flex-[2] px-4 py-3 bg-purple-600 text-white font-bold rounded-xl text-sm shadow-lg shadow-purple-100 hover:bg-purple-700 active:scale-[0.98] transition-all"
+        >
+          Save Journey
         </button>
       </div>
-      <button
-        type="submit"
-        className="px-4 py-2 bg-[#ffb545] text-black font-bold rounded"
-      >
-        Add City
-      </button>
     </form>
   );
 };

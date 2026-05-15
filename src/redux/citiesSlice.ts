@@ -16,6 +16,8 @@ export interface City {
 interface CitiesState {
   cities: City[];
   currentCity: City | null;
+  startCity: City | null;
+  endCity: City | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -23,6 +25,8 @@ interface CitiesState {
 const initialState: CitiesState = {
   cities: [],
   currentCity: null,
+  startCity: null,
+  endCity: null,
   isLoading: false,
   error: null,
 };
@@ -67,7 +71,18 @@ export const deleteCity = createAsyncThunk(
 const citiesSlice = createSlice({
   name: "cities",
   initialState,
-  reducers: {},
+  reducers: {
+    setStartCity: (state, action) => {
+      state.startCity = action.payload;
+    },
+    setEndCity: (state, action) => {
+      state.endCity = action.payload;
+    },
+    clearRoute: (state) => {
+      state.startCity = null;
+      state.endCity = null;
+    }
+  },
 
   extraReducers: (builder) => {
     builder
@@ -108,4 +123,5 @@ const citiesSlice = createSlice({
   },
 });
 
+export const { setStartCity, setEndCity, clearRoute } = citiesSlice.actions;
 export default citiesSlice.reducer;
