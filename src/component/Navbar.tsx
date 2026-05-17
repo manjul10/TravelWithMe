@@ -24,30 +24,30 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-2.5 p-3 max-w-7xl mx-auto  ">
+      <div className="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto">
         <Link
           to="/"
-          className="flex items-center text-2xl font-bold tracking-widest gap-3"
+          className="flex items-center text-xl font-bold tracking-[0.2em] gap-3 uppercase text-gray-800"
         >
           {" "}
           <img
             src={logo}
-            height={50}
-            width={50}
-            className="bg-[#f8f4eb] fill"
+            height={32}
+            width={32}
+            className="opacity-90"
           />{" "}
           Travel With Us
         </Link>
 
-        <div className="flex gap-8 items-center text-xl font-normal">
-          <Link to="/pricing">Pricing</Link>
-          <Link to="/product">Product</Link>
+        <div className="flex gap-10 items-center text-sm font-semibold uppercase tracking-widest text-gray-600">
+          <Link to="/pricing" className="hover:text-gray-900 transition-colors">Pricing</Link>
+          <Link to="/product" className="hover:text-gray-900 transition-colors">Product</Link>
           {isLoggedIn ? (
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium">{email}</span>
+            <div className="flex items-center gap-6">
+              <span className="text-xs font-bold text-gray-400 tracking-normal normal-case">{email}</span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                className="px-6 py-2 bg-red-500 text-white rounded-full text-xs hover:bg-red-600 transition-all shadow-sm"
               >
                 Logout
               </button>
@@ -55,7 +55,7 @@ const Navbar = () => {
           ) : (
             <button
               onClick={() => setShowLoginModal(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-8 py-2.5 bg-gray-900 text-white rounded-full text-xs hover:bg-gray-800 transition-all shadow-lg"
             >
               Login
             </button>

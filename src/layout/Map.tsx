@@ -49,9 +49,11 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
     dispatch(fetchCities());
   }, [dispatch]);
 
+  // Only move the map center when coordinates explicitly change in the URL
+  // (e.g. from selecting a city in the sidebar)
   useEffect(() => {
-    if (mapLat && mapLng) {
-      setMapPosition([Number(mapLat), Number(mapLng)]);
+    if (mapLat && mapLng && mapLat !== 0 && mapLng !== 0) {
+      setMapPosition([mapLat, mapLng]);
     }
   }, [mapLat, mapLng]);
 
@@ -59,6 +61,7 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
     city.cityName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // LOGIC FIX: Explicitly derive coordinates from the SELECTED cities in Redux
   const startCoords = startCity 
     ? [startCity.position.lat, startCity.position.lng] as [number, number]
     : locationPosition 
@@ -99,7 +102,7 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
               </svg>
-              <span className="font-bold text-xs uppercase tracking-widest">Navigation</span>
+              <span className="font-bold text-xs uppercase tracking-widest text-white">Navigation</span>
             </div>
             <button 
               onClick={() => dispatch(clearRoute())}
@@ -125,20 +128,20 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
                     onClick={() => setShowSearch(showSearch === 'start' ? null : 'start')}
                     className="w-full text-left bg-gray-50 px-3 py-2 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-100 transition-colors truncate"
                   >
-                    {startCity ? startCity.cityName : (locationPosition ? "My Location" : "Select Start Point")}
+                    {startCity ? startCity.cityName : (locationPosition ? "My Current Location" : "Choose Starting Point")}
                   </button>
                   {showSearch === 'start' && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-100 rounded-xl shadow-xl z-[1010] max-h-40 overflow-y-auto p-2">
                        <input 
                          autoFocus
-                         placeholder="Filter cities..." 
+                         placeholder="Search your cities..." 
                          className="w-full text-[10px] p-2 border-b border-gray-50 outline-none mb-1"
                          onChange={(e) => setSearchQuery(e.target.value)}
                        />
                        {locationPosition && (
                          <button 
                            onClick={() => {
-                             dispatch(setStartCity(null));
+                             dispatch(setStartCity(null)); 
                              setShowSearch(null);
                              setSearchQuery("");
                            }}
@@ -155,7 +158,7 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
                              setShowSearch(null);
                              setSearchQuery("");
                            }}
-                           className="w-full text-left p-2 text-[10px] hover:bg-purple-50 rounded-lg transition-colors"
+                           className="w-full text-left p-2 text-[10px] hover:bg-purple-50 rounded-lg transition-colors font-medium text-gray-600"
                          >
                            {city.cityName}
                          </button>
@@ -175,13 +178,13 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
                     onClick={() => setShowSearch(showSearch === 'end' ? null : 'end')}
                     className="w-full text-left bg-gray-50 px-3 py-2 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-100 transition-colors truncate"
                   >
-                    {endCity ? endCity.cityName : "Select Destination"}
+                    {endCity ? endCity.cityName : "Choose Destination"}
                   </button>
                   {showSearch === 'end' && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-100 rounded-xl shadow-xl z-[1010] max-h-40 overflow-y-auto p-2">
                        <input 
                          autoFocus
-                         placeholder="Filter cities..." 
+                         placeholder="Search your cities..." 
                          className="w-full text-[10px] p-2 border-b border-gray-50 outline-none mb-1"
                          onChange={(e) => setSearchQuery(e.target.value)}
                        />
@@ -193,7 +196,7 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
                              setShowSearch(null);
                              setSearchQuery("");
                            }}
-                           className="w-full text-left p-2 text-[10px] hover:bg-purple-50 rounded-lg transition-colors"
+                           className="w-full text-left p-2 text-[10px] hover:bg-purple-50 rounded-lg transition-colors font-medium text-gray-600"
                          >
                            {city.cityName}
                          </button>
@@ -206,6 +209,7 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
         </div>
       </div>
 
+      {/* Manual Location Button */}
       {!locationPosition && (
         <button
           onClick={getPosition}
@@ -215,7 +219,7 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 group-hover:animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           </svg>
-          {locationLoading ? "Searching..." : "Pin My Location"}
+          {locationLoading ? "Locating..." : "Pin My Current Location"}
         </button>
       )}
 
@@ -234,6 +238,8 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
           />
           <ChangeCenter position={mapPosition} />
           <ClickOnMap onMapClick={onMapClick} />
+          
+          {/* THE ROUTE: Strictly between startCoords and endCoords */}
           {startCoords && endCoords && (
             <Routing 
               start={startCoords} 
@@ -254,15 +260,15 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
                   <div className="flex flex-col gap-1">
                     <button 
                       onClick={() => dispatch(setStartCity(city))}
-                      className="text-[10px] bg-purple-50 text-purple-700 py-1 px-2 rounded-md font-bold hover:bg-purple-100"
+                      className="text-[10px] bg-purple-50 text-purple-700 py-1.5 px-3 rounded-md font-bold hover:bg-purple-100 transition-colors"
                     >
-                      Set as Start
+                      Set as Start Point
                     </button>
                     <button 
                       onClick={() => dispatch(setEndCity(city))}
-                      className="text-[10px] bg-gray-50 text-gray-700 py-1 px-2 rounded-md font-bold hover:bg-gray-100"
+                      className="text-[10px] bg-gray-50 text-gray-700 py-1.5 px-3 rounded-md font-bold hover:bg-gray-100 transition-colors"
                     >
-                      Set as End
+                      Set as Destination
                     </button>
                   </div>
                 </div>
@@ -271,7 +277,17 @@ const Map = ({ onMapClick }: { onMapClick?: () => void }) => {
           ))}
           {locationPosition && (
             <Marker position={[locationPosition.lat, locationPosition.lng]}>
-              <Popup>You are here!</Popup>
+              <Popup>
+                <div className="p-1">
+                  <p className="font-bold text-purple-600 text-xs mb-2">You are here!</p>
+                  <button 
+                    onClick={() => dispatch(setStartCity(null))}
+                    className="w-full text-[10px] bg-purple-600 text-white py-1 px-2 rounded font-bold"
+                  >
+                    Set as Route Start
+                  </button>
+                </div>
+              </Popup>
             </Marker>
           )}
         </MapContainer>
